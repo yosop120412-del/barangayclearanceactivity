@@ -1,0 +1,202 @@
+
+<div class="container">
+
+  <header>
+    <h1>Barangay Clearance Request</h1>
+    <p>Fill out the form below to request your barangay clearance.</p>
+  </header>
+
+  <!-- Status Banner -->
+  <div
+    class="status-banner"
+    [class.valid]="formStatus === 'VALID'"
+    [class.invalid]="formStatus === 'INVALID'">
+
+    <strong>Form Status: {{ formStatus }}</strong>
+
+    <span *ngIf="formStatus === 'VALID'">
+      - All required fields are completed.
+    </span>
+
+    <span *ngIf="formStatus === 'INVALID'">
+      - Please complete all required fields.
+    </span>
+
+  </div>
+
+  <div class="content">
+
+    <!-- Request Form -->
+    <div class="form-card">
+
+      <h2>Request Information</h2>
+
+      <form [formGroup]="clearanceForm" (ngSubmit)="onSubmit()">
+
+        <!-- Full Name -->
+        <div class="form-group">
+
+          <label>Full Name</label>
+
+          <input
+            type="text"
+            formControlName="fullName"
+            placeholder="Enter your full name">
+
+          <small
+            *ngIf="clearanceForm.get('fullName')?.touched &&
+                   clearanceForm.get('fullName')?.invalid">
+            Full name is required.
+          </small>
+
+        </div>
+
+        <!-- Birthdate -->
+        <div class="form-group">
+
+          <label>Birthdate</label>
+
+          <input
+            type="date"
+            formControlName="birthdate">
+
+          <small
+            *ngIf="clearanceForm.get('birthdate')?.touched &&
+                   clearanceForm.get('birthdate')?.invalid">
+            Birthdate is required.
+          </small>
+
+        </div>
+
+        <!-- Address -->
+        <div class="form-group">
+
+          <label>Complete Address</label>
+
+          <input
+            type="text"
+            formControlName="address"
+            placeholder="Enter your complete address">
+
+          <small
+            *ngIf="clearanceForm.get('address')?.touched &&
+                   clearanceForm.get('address')?.invalid">
+            Address is required.
+          </small>
+
+        </div>
+
+        <!-- Contact Number -->
+        <div class="form-group">
+
+          <label>Contact Number</label>
+
+          <input
+            type="tel"
+            formControlName="contactNumber"
+            placeholder="09XXXXXXXXX"
+            maxlength="11">
+
+          <small
+            *ngIf="clearanceForm.get('contactNumber')?.touched &&
+                   clearanceForm.get('contactNumber')?.hasError('required')">
+            Contact number is required.
+          </small>
+
+          <small
+            *ngIf="clearanceForm.get('contactNumber')?.touched &&
+                   clearanceForm.get('contactNumber')?.hasError('invalidContactNumber')">
+            Enter a valid 11-digit number starting with 09.
+          </small>
+
+        </div>
+
+        <!-- Purpose -->
+        <div class="form-group">
+
+          <label>Purpose</label>
+
+          <select formControlName="purpose">
+
+            <option value="">Select purpose</option>
+            <option value="Employment">Employment</option>
+            <option value="School Requirement">School Requirement</option>
+            <option value="Personal Use">Personal Use</option>
+            <option value="Business">Business</option>
+            <option value="Others">Others</option>
+
+          </select>
+
+          <small
+            *ngIf="clearanceForm.get('purpose')?.touched &&
+                   clearanceForm.get('purpose')?.invalid">
+            Please select a purpose.
+          </small>
+
+        </div>
+
+        <!-- Others Field -->
+        <div class="form-group"
+             *ngIf="clearanceForm.get('purpose')?.value === 'Others'">
+
+          <label>Specify Other Purpose</label>
+
+          <input
+            type="text"
+            formControlName="otherPurpose"
+            placeholder="Please specify your purpose">
+
+          <small
+            *ngIf="clearanceForm.get('otherPurpose')?.touched &&
+                   clearanceForm.get('otherPurpose')?.invalid">
+            Please specify your purpose.
+          </small>
+
+        </div>
+
+        <button type="submit">
+          Submit Request
+        </button>
+
+      </form>
+
+    </div>
+
+    <!-- Live Preview Card -->
+    <div class="preview-card">
+
+      <h2>Request Preview</h2>
+
+      <p><strong>Full Name:</strong></p>
+      <p>{{ formData.fullName || 'Not provided yet' }}</p>
+
+      <p><strong>Birthdate:</strong></p>
+      <p>{{ formData.birthdate || 'Not provided yet' }}</p>
+
+      <p><strong>Address:</strong></p>
+      <p>{{ formData.address || 'Not provided yet' }}</p>
+
+      <p><strong>Contact Number:</strong></p>
+      <p>{{ formData.contactNumber || 'Not provided yet' }}</p>
+
+      <p><strong>Purpose:</strong></p>
+      <p>{{ formData.purpose || 'Not provided yet' }}</p>
+
+      <div *ngIf="formData.purpose === 'Others'">
+
+        <p><strong>Other Purpose:</strong></p>
+        <p>{{ formData.otherPurpose || 'Not specified yet' }}</p>
+
+      </div>
+
+      <hr>
+
+      <p class="preview-status">
+        Current Status: {{ formStatus }}
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
